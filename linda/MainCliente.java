@@ -2,7 +2,6 @@ package linda;
 
 import java.io.IOException;
 
-import linda.Cliente;
 
 public class MainCliente {
 	 public static void main(String[] args) throws IOException {
