@@ -18,9 +18,9 @@ public class Cliente extends ConexionLindaClient {
 	 */
 	public void startClient() {//Método para iniciar el cliente
         try {
-		    DataInputStream in = new DataInputStream(csClient.getInputStream());
+		    DataInputStream in = new DataInputStream(csCliente.getInputStream());
         	// Canal para enviar mensajes (salida)
-            DataOutputStream out = new DataOutputStream(csClient.getOutputStream());
+            DataOutputStream out = new DataOutputStream(csCliente.getOutputStream());
             Scanner entrada = new Scanner(System.in);
             System.out.println("INTRODUZCA TU NOMBRE: ");
         	String cliente = entrada.nextLine();
@@ -42,7 +42,7 @@ public class Cliente extends ConexionLindaClient {
             	if(operacion.equalsIgnoreCase("END OF SERVICE")) break;
             	mensaje(in);
             }
-            csClient.close();
+            csCliente.close();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

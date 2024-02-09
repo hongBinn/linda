@@ -12,13 +12,16 @@ import java.util.List;
 public class ServerLinda extends ConexionLindaServer {
     private List<List<String>> almacen;
     private ConexionLindaClient lindaClient;
-    public BufferedReader entrada = new BufferedReader(new InputStreamReader(csServidor.getInputStream()));
-    public PrintWriter salida = new PrintWriter(csServidor.getOutputStream(),true);
+    public BufferedReader entradaServidor = new BufferedReader(new InputStreamReader(csServidor.getInputStream()));
+    public PrintWriter salidaServidor = new PrintWriter(csServidor.getOutputStream(),true);
     public ServerLinda() throws IOException {
         super("servidorLinda"); // Call the constructor of ConexionLindaClient
         this.lindaClient = new ConexionLindaClient("client");
         this.almacen = new ArrayList<>();
     }
+    public BufferedReader entradaCliente = new BufferedReader(new InputStreamReader(lindaClient.csCliente.getInputStream()));
+    public PrintWriter salidaCliente = new PrintWriter(lindaClient.csCliente.getOutputStream(),true);
+
     public void start() throws IOException {
 		while (true) {
 			System.out.println("Esperando...");
@@ -27,7 +30,7 @@ public class ServerLinda extends ConexionLindaServer {
             try {
                 while(true) {
                     csServidor = ssServidor.accept();
-                    ThreadAtiendeCliente threads = new ThreadAtiendeCliente ( csServidor, entrada, salida, almacen);
+                    ThreadAtiendeCliente threads = new ThreadAtiendeCliente ( csServidor, entradaCliente, salidaCliente, almacen);
                     threads.start();
                 }
             }
