@@ -1,5 +1,11 @@
 package linda;
 
-public class MainLinda {
+import java.io.IOException;
 
+public class MainLinda {
+	public static void main(String[] args) throws IOException {
+        ServerLinda serv = new ServerLinda(); 
+        System.out.println("Iniciando servidor\n");
+        serv.start();
+    }
 }
