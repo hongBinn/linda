@@ -2,12 +2,12 @@ package linda;
 
 import java.io.IOException;
 
-import linda.Servidor1;
+import linda.Servidor;
 
-public class MainServer1 {
+public class MainServer {
 	public static void main(String[] args) throws IOException {
-        Servidor1 serv = new Servidor1(); 
+        Servidor serv = new Servidor(); 
         System.out.println("Iniciando servidor\n");
-        serv.start();
+        serv.startServer();
     }
 }

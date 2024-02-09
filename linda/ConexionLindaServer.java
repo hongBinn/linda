@@ -7,14 +7,14 @@ import java.net.Socket;
 public class ConexionLindaServer {
 	private final int PUERTO = 1234;
     private final String HOST = "localhost"; 
-    protected ServerSocket ss; 
-    protected Socket cs; 
+    protected ServerSocket ssServidor; 
+    protected Socket csServidor; 
     
     public ConexionLindaServer(String tipo) throws IOException {
         if(tipo.equalsIgnoreCase("servidor")) {
-            ss = new ServerSocket(PUERTO);
+            ssServidor = new ServerSocket(PUERTO);
         } else {
-            cs = new Socket(HOST, PUERTO);
+            csServidor = new Socket(HOST, PUERTO);
         }
     }
 }
