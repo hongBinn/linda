@@ -1,6 +1,8 @@
 package linda;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -10,74 +12,142 @@ import java.util.List;
 
 public class ThreadAtiendeCliente extends Thread {
     private List<List<String>> almacen;
-    protected Socket cs;
-    public BufferedReader entrada;
-    public PrintWriter salida;
-    public ThreadAtiendeCliente(Socket cs, BufferedReader entrada, PrintWriter salida, List<List<String>> almacen) {
-        this.cs = cs;
-        this.entrada = entrada;
-        this.salida = salida;
-        this.almacen = almacen;
+    public DataOutputStream outCliente; 
+    public DataInputStream inCliente; 
+
+    public ThreadAtiendeCliente(Socket cs, List<List<String>> almacen) {
+        try {
+			this.outCliente = new DataOutputStream(cs.getOutputStream());
+			this.inCliente = new DataInputStream(cs.getInputStream());
+	        this.almacen = almacen;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     public void run() {
         try {
-            String mensaje = entrada.readLine();
+        	String mensaje = inCliente.readUTF();
             if(mensaje.startsWith("PostNote")) {
-                PostNote(mensaje);
+                PostNote();
             }else if(mensaje.startsWith("RemoveNote")) {
-                PostNote(mensaje);
+            	RemoveNote();
             }else if(mensaje.startsWith("readNote")) {
-                PostNote(mensaje);
+            	readNote();
+            	
             }else{
             }
         }catch(IOException e) {
             e.printStackTrace();
-    }
-}
+	    }
+	}
 
-public void PostNote(String mensaje) {
-    String[] mensajeTabla = mensaje.split("/s");
-    List<String> tuple =  new ArrayList<String>();
-    for (int i = 0; i < mensajeTabla.length; i++) {
-        tuple.add(mensajeTabla[i]);
-    }
-    almacen.add(tuple);
-    salida.write("Tuple añadida: " + tuple);
-}
-
-public List<String> RemoveNote() {
-    if (!almacen.isEmpty()) {
-        int index = (int) (Math.random() * almacen.size());
-        List<String> tuple = almacen.remove(index);
-        System.out.println("Tupla Eliminada: " + tuple);
-        return tuple;
-    } else {
-        System.out.println("No tuples available.");
-        return null;
-    }
-}
-
-public List<String> readNote(List<String> pattern) {
-    for (List<String> tuple : almacen) {
-        if (foundTuple(tuple, pattern)) {
-            System.out.println("Tupla Encontrada: " + tuple);
-            return tuple;
-        }
-    }
-    System.out.println("No hemos encontrado la tupla dicha.");
-    return null;
-}
-
-public boolean foundTuple(List<String> tuple, List<String> tupleBuscada) {
-    if (tuple.size() != tupleBuscada.size()) {
-        return false;
-    }
-    for (int i = 0; i < tuple.size(); i++) {
-        String mismaTupla = tupleBuscada.get(i);
-        if (!mismaTupla.startsWith("?") && !mismaTupla.equals(tuple.get(i))) {
-            return false;
-        }
-    }
-    return true;
-}
+	public void PostNote() {
+		try {
+			outCliente.writeUTF("Introduce la tupla que quieres guardar./n"
+					+ "Separar los contenidos con espacio.");
+			String mensaje = inCliente.readUTF();
+			guardarTupla(mensaje);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
+	}
+	
+	private void guardarTupla(String mensaje) {
+		List<String> clientetupla = mensajeAtupla(mensaje);
+	    almacen.add(clientetupla);
+	    try {
+			outCliente.writeUTF("Tuple añadida: ");
+		    for (int i = 0; i < clientetupla.size(); i++) {
+	    		outCliente.writeUTF(clientetupla.get(i));
+	    	}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void RemoveNote() {
+		try {
+			outCliente.writeUTF("Introduce la tupla que quieres eliminar./n"
+					+ "Separar los contenidos con espacio.");
+			String mensaje = inCliente.readUTF();
+			eliminarTupla(mensaje);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void eliminarTupla(String mensaje) {
+		if (!almacen.isEmpty()) {
+	    	List<String>tuple = null;
+	    	for(int i = 0; i < almacen.size(); i++ ) {
+	    		for(int j = 0; j < almacen.get(i).size(); j++ ) {
+		    		if(almacen.get(i).get(j) == mensaje) {
+		    			tuple = almacen.get(i);
+		    			almacen.remove(almacen.get(i));
+		    		}
+		    	}
+	    	}	       
+	        System.out.println("Tupla Eliminada: " + tuple);
+	    } else {
+	        System.out.println("No tuples available.");
+	    }
+	}
+	
+	public void readNote() {
+		try {
+			outCliente.writeUTF("Introduce la tupla que quieres leer./n"
+					+ "Separar los contenidos con espacio.");
+			String mensaje = inCliente.readUTF();
+			leerTupla(mensaje);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
+	}
+	
+	private void leerTupla(String mensaje) {
+		for (List<String> tupla : almacen) {
+	        if (foundTuple(tupla, mensaje)) {
+	            System.out.println("Tupla Encontrada: " );
+	            for (int i = 0; i < tupla.size(); i++) {
+		    		try {
+						outCliente.writeUTF(tupla.get(i));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    	}
+	        }
+	    }
+	    System.out.println("No hemos encontrado la tupla dicha.");
+	}
+	
+	public boolean foundTuple(List<String> tuple, String mensaje) {
+		List<String> clientetupla = mensajeAtupla(mensaje);
+	    if (tuple.size() != clientetupla.size()) {
+	        return false;
+	    }
+	    for (int i = 0; i < tuple.size(); i++) {
+	        String mismaTupla = clientetupla.get(i);
+	        if (!mismaTupla.startsWith("?") && !mismaTupla.equals(tuple.get(i))) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+	
+	private List<String>  mensajeAtupla(String mensaje) {
+		String[] mensajeTabla = mensaje.split("/s");
+	    List<String> tupla =  new ArrayList<String>();
+	    for (int i = 0; i < mensajeTabla.length; i++) {
+	        tupla.add(mensajeTabla[i]);
+	    }
+		return tupla;
+	}
 }

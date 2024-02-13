@@ -21,8 +21,8 @@ public class Servidor extends ConexionLindaServer{
 			csServidor = ssServidor.accept();
             System.out.println("Cliente en línea");
 		    System.out.println("Cliente conectado desde " + csServidor.getInetAddress());
-		    ThreadAtiendeCliente thread = new ThreadAtiendeCliente(csServidor,entrada,salida,almacen);
-		    thread.start();
+            ThreadAtiendeCliente threads = new ThreadAtiendeCliente ( csServidor, almacen);
+            threads.start();
 		}
     }
 }

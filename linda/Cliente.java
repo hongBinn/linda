@@ -22,17 +22,13 @@ public class Cliente extends ConexionLindaClient {
         	// Canal para enviar mensajes (salida)
             DataOutputStream out = new DataOutputStream(csCliente.getOutputStream());
             Scanner entrada = new Scanner(System.in);
-            System.out.println("INTRODUZCA TU NOMBRE: ");
-        	String cliente = entrada.nextLine();
-        	out.writeUTF(cliente);
-            System.out.println("INICIO COMPRA: " + cliente);
 	        System.out.println("BIENVENIDO AL SERVICIO" );
             while(true) {
-            	System.out.println(" PostNote: \n"
+            	System.out.println("PostNote: \n"
 		        		+	"ReadNote:\n"
 		        		+	"RemoveNote: ");
             	String operacion = entrada.nextLine();
-	            if (!operacion.startsWith("PostNote") || !operacion.startsWith("ReadNote") ||!operacion.startsWith("RemoveNote")) {
+	            if (operacion.startsWith("PostNote") || operacion.startsWith("ReadNote") || operacion.startsWith("RemoveNote")) {
 		            System.out.println("Operación: "+ operacion);
 	            	out.writeUTF(operacion);
 	            }else {
