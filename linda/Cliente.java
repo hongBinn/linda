@@ -24,19 +24,11 @@ public class Cliente extends ConexionLindaClient {
             Scanner entrada = new Scanner(System.in);
 	        System.out.println("BIENVENIDO AL SERVICIO" );
             while(true) {
-            	System.out.println("PostNote: \n"
-		        		+	"ReadNote:\n"
-		        		+	"RemoveNote: ");
-            	String operacion = entrada.nextLine();
-	            if (operacion.startsWith("PostNote") || operacion.startsWith("ReadNote") || operacion.startsWith("RemoveNote")) {
-		            System.out.println("Operación: "+ operacion);
-	            	out.writeUTF(operacion);
-	            }else {
-	            	System.out.println("Operación invalido, introduce otra vez.");
-	            	continue;
-	            }
-            	if(operacion.equalsIgnoreCase("END OF SERVICE")) break;
             	mensaje(in);
+    	        System.out.println("Introduce operacion:");
+            	String operacion = entrada.nextLine();
+            	out.writeUTF(operacion);
+            	if(operacion.equalsIgnoreCase("END OF SERVICE")) break;
             }
             csCliente.close();
         }
@@ -54,7 +46,7 @@ public class Cliente extends ConexionLindaClient {
 		while (true) {
     	    try {
     	    	String info = in.readUTF();
-    	        if (info.equalsIgnoreCase("OPERACION TERMINADA")) {
+    	        if (info.equalsIgnoreCase("MENSAJE FIN")) {
     	        	System.out.println( info );
     	            break;
     	        } else {

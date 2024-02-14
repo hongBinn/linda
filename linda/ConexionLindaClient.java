@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ConexionLindaClient {
-    private final int PUERTO = 5050; //Puerto para la conexión
+    private final int PUERTO = 5051; //Puerto para la conexión
     private final String HOST = "localhost"; //Host para la conexión
     protected ServerSocket ssCliente; //Socket del servidor
     protected Socket csCliente; //Socket del cliente

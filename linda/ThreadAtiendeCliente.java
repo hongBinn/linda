@@ -11,9 +11,11 @@ public class ThreadAtiendeCliente extends Thread {
     private List<List<String>> almacen;
     public DataOutputStream outCliente; 
     public DataInputStream inCliente; 
+    public Socket cs ;
 
     public ThreadAtiendeCliente(Socket cs, List<List<String>> almacen) {
         try {
+        	this.cs = cs;
 			this.outCliente = new DataOutputStream(cs.getOutputStream());
 			this.inCliente = new DataInputStream(cs.getInputStream());
 	        this.almacen = almacen;
@@ -21,6 +23,7 @@ public class ThreadAtiendeCliente extends Thread {
 			e.printStackTrace();
 		}
     }
+    
     public void run() {
         try {
         	String mensaje = inCliente.readUTF();

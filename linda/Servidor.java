@@ -10,12 +10,13 @@ public class Servidor extends ConexionLindaServer{
     }
 
     public void startServer() throws IOException {
+    	System.out.println("Linda en línea");
+	    System.out.println("Linda conectado desde " + csServidor.getInetAddress());
     	while (true) {
-			csServidor = ssServidor.accept();
-            System.out.println("Linda en línea");
-		    System.out.println("Linda conectado desde " + csServidor.getInetAddress());
-            ThreadAtiendeCliente threads = new ThreadAtiendeCliente ( csServidor, almacen);
-            threads.start();
+		    if (csServidor != null) {
+	            ThreadAtiendeCliente threads = new ThreadAtiendeCliente ( csServidor, almacen);
+	            threads.start();
+		    }
 		}
     }
 }
