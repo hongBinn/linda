@@ -23,6 +23,14 @@ public class ThreadAtiendeServidor extends Thread {
     }
 	
 	public void run() {
-    
+		while(true) {
+			try {
+				outServidor.writeUTF(inCliente.readUTF());
+				outCliente.writeUTF(inServidor.readUTF());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

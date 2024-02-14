@@ -41,10 +41,6 @@ public class ServerLinda extends ConexionLindaServer {
 			            System.out.println("Cliente en línea");
 					    System.out.println("Cliente conectado desde " + lindaClient.csCliente.getInetAddress());
 					}
-                	outCliente.writeUTF("Seleccionar un Servidor por tamaño. \n"
-                			+	"Servidor 1: 1 a 3 \n"
-                			+	"Servidor 2: 4 a 5 \n"
-                			+	"Servidor 3: 6");
                     seleccionarServidor(csServidores);
 					
                 }
@@ -58,6 +54,10 @@ public class ServerLinda extends ConexionLindaServer {
 	private void seleccionarServidor(List<Socket> csServidores) {
         String mensaje;
 		try {
+			outCliente.writeUTF("Seleccionar un Servidor por tamaño. \n"
+        			+	"Servidor 1: 1 a 3 \n"
+        			+	"Servidor 2: 4 a 5 \n"
+        			+	"Servidor 3: 6");
 			mensaje = inCliente.readUTF();
 			ThreadAtiendeServidor threads = null;
 	        if(mensaje.toUpperCase().equals("SERVIDOR1")) {
