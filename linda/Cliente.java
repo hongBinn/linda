@@ -17,8 +17,8 @@ public class Cliente extends ConexionLindaClient {
 	 * serverOut() Mostrar los mensajes que enviado por servidor.
 	 */
 	public void startClient() {//Método para iniciar el cliente
-        try (DataInputStream in = new DataInputStream(cs.getInputStream());
-        	 DataOutputStream out = new DataOutputStream(cs.getOutputStream())) {
+        try (DataInputStream in = new DataInputStream(csCliente.getInputStream());
+        	 DataOutputStream out = new DataOutputStream(csCliente.getOutputStream())) {
             Scanner entrada = new Scanner(System.in);
 	        System.out.println("BIENVENIDO AL SERVICIO" );
             while(true) {
@@ -28,7 +28,7 @@ public class Cliente extends ConexionLindaClient {
             	out.writeUTF(operacion);
             	if(operacion.equalsIgnoreCase("END OF SERVICE")) break;
             }
-            cs.close();
+            csCliente.close();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

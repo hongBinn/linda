@@ -10,16 +10,17 @@ public class ConexionLindaClient {
     private final String HOST = "localhost";
     protected ServerSocket ssCliente;
     protected ServerSocket ssServidor;
-    protected Socket cs;
+    protected Socket csCliente;
+    protected Socket csServidor;
     
     public ConexionLindaClient(String tipo) throws IOException {//Constructor
         if(tipo.equalsIgnoreCase("linda")) {
         	ssCliente = new ServerSocket(PUERTO_CLIENTE);
         	ssServidor = new ServerSocket(PUERTO_SERVIDOR);
         } else if (tipo.equalsIgnoreCase("servidor")) {
-        	cs = new Socket(HOST, PUERTO_SERVIDOR);
+        	csServidor = new Socket(HOST, PUERTO_SERVIDOR);
         } else {
-            cs = new Socket(HOST, PUERTO_CLIENTE);
+        	csCliente = new Socket(HOST, PUERTO_CLIENTE);
         }
     }
 }

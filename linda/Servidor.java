@@ -12,14 +12,16 @@ public class Servidor extends ConexionLindaClient{
     }
 
     public void startServer() throws IOException {
-    	try (DataInputStream in = new DataInputStream(cs.getInputStream());
-    		DataOutputStream out = new DataOutputStream(cs.getOutputStream())) {
+    	try (DataInputStream in = new DataInputStream(csServidor.getInputStream());
+    		DataOutputStream out = new DataOutputStream(csServidor.getOutputStream())) {
     		System.out.println("Linda en línea");
-		    System.out.println("Linda conectado desde " + cs.getInetAddress());
+		    System.out.println("Linda conectado desde " + csServidor.getInetAddress());
 	    	while (true) {
-	            ThreadAtiendeServidor threads = new ThreadAtiendeServidor ( cs, almacen);
+	            ThreadAtiendeServidor threads = new ThreadAtiendeServidor ( csServidor, almacen);
 	            threads.start();
+	            if(in.readUTF().equalsIgnoreCase("END OF SERVICE")) break;
 			}
+	    	csServidor.close();
     	}
     }
 }

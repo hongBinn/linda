@@ -27,13 +27,14 @@ public class ThreadAtiendeServidor extends Thread {
     public void run() {
     	while(true) {
 	        try {
-				out.writeUTF("SERVIDOR CONECTADO A LINDA");
+				System.out.println("SERVIDOR CONECTADO A LINDA");
 	        	out.writeUTF("Operacion: \n"
 	        			+	"PostNote: PN \n"
 	        			+	"ReadNote: RN \n"
 	        			+	"RemoveNote: RVN");
 				out.writeUTF("MENSAJE FIN");
 	        	String mensaje = in.readUTF();
+				System.out.println(mensaje);
 	            if(mensaje.toUpperCase().equals("PN") || mensaje.toUpperCase().equals("POSTNOTE")) {
 	                PostNote();
 	            }else if(mensaje.toUpperCase().equals("RVN") || mensaje.toUpperCase().equals("REMOVENOTE")) {
@@ -56,9 +57,8 @@ public class ThreadAtiendeServidor extends Thread {
 					+ "Separar los contenidos con espacio.");
 			String mensaje = in.readUTF();
 			guardarTupla(mensaje);
-			
+		    out.writeUTF("MENSAJE FIN");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	   
@@ -73,7 +73,6 @@ public class ThreadAtiendeServidor extends Thread {
 	    		out.writeUTF(clientetupla.get(i));
 	    	}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -82,29 +81,34 @@ public class ThreadAtiendeServidor extends Thread {
 		try {
 			out.writeUTF("Introduce la tupla que quieres eliminar./n"
 					+ "Separar los contenidos con espacio.");
+		    out.writeUTF("MENSAJE FIN");
 			String mensaje = in.readUTF();
 			eliminarTupla(mensaje);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	private void eliminarTupla(String mensaje) {
-		if (!almacen.isEmpty()) {
-	    	List<String>tuple = null;
-	    	for(int i = 0; i < almacen.size(); i++ ) {
-	    		for(int j = 0; j < almacen.get(i).size(); j++ ) {
-		    		if(almacen.get(i).get(j) == mensaje) {
-		    			tuple = almacen.get(i);
-		    			almacen.remove(almacen.get(i));
-		    		}
-		    	}
-	    	}	       
-	        System.out.println("Tupla Eliminada: " + tuple);
-	    } else {
-	        System.out.println("No tuples available.");
-	    }
+        try {
+			if (!almacen.isEmpty()) {
+		    	List<String>tuple = null;
+		    	for(int i = 0; i < almacen.size(); i++ ) {
+		    		for(int j = 0; j < almacen.get(i).size(); j++ ) {
+			    		if(almacen.get(i).get(j) == mensaje) {
+			    			tuple = almacen.get(i);
+			    			almacen.remove(almacen.get(i));
+			    		}
+			    	}
+		    	}	       
+		        System.out.println("Tupla Eliminada: " + tuple);
+				out.writeUTF("Tupla Eliminada: " + tuple);
+		    } else {
+		        System.out.println("No tuples available.");
+		    }
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void readNote() {
@@ -113,8 +117,8 @@ public class ThreadAtiendeServidor extends Thread {
 					+ "Separar los contenidos con espacio.");
 			String mensaje = in.readUTF();
 			leerTupla(mensaje);
+		    out.writeUTF("MENSAJE FIN");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	   
@@ -128,7 +132,6 @@ public class ThreadAtiendeServidor extends Thread {
 		    		try {
 						out.writeUTF(tupla.get(i));
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 		    	}

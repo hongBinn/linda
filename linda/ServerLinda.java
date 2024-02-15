@@ -24,19 +24,19 @@ public class ServerLinda extends ConexionLindaClient{
 			while (true) {
                 if (ssServidor.isBound()) {
     				if (csServidores.size() < 4) {
-                        cs = ssServidor.accept();
+                        csServidor = ssServidor.accept();
                         System.out.println("Servidor Conectado.");
-                        csServidores.add(cs);
+                        csServidores.add(csServidor);
     				}                    
     			}
                 if (ssCliente.isBound()) {
-                	cs = ssCliente.accept();
-                    DataOutputStream outCliente = new DataOutputStream(cs.getOutputStream());
+                	csCliente = ssCliente.accept();
+                    DataOutputStream outCliente = new DataOutputStream(csCliente.getOutputStream());
                     System.out.println("Cliente Conectado.");
                     outCliente.writeUTF("Estas conectado a LINDA.\n"
                     		+ csServidores.size() + " Servidores en linea.");
                     if(csServidores.size() > 0) {
-    		        	ThreadAtiendeCliente threads = new ThreadAtiendeCliente(csServidores, cs);
+    		        	ThreadAtiendeCliente threads = new ThreadAtiendeCliente(csServidores, csCliente);
     		    		threads.start();
                     }
                 }

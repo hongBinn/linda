@@ -37,13 +37,14 @@ public class ThreadAtiendeCliente extends Thread {
 			outCliente.writeUTF("MENSAJE FIN");
 			mensaje = inCliente.readUTF();
 	        if(mensaje.toUpperCase().equals("SERVIDOR1")) {
-	        	outServidor = new DataOutputStream(servidores.get(0).getOutputStream());
-	        	inServidor = new DataInputStream(servidores.get(0).getInputStream());
-				outCliente.writeUTF("CONECTADO A SERVIDOR 1");
 				System.out.println("Cliente conectado a servidor 1");
-				mensaje(inServidor, outCliente);
+	        	clienteServidor(servidores.get(0));
 			}else if(mensaje.toUpperCase().equals("SERVIDOR2")) {
+				System.out.println("Cliente conectado a servidor 2");
+				clienteServidor(servidores.get(1));
 	        }else if(mensaje.toUpperCase().equals("SERVIDOR3")) {
+				System.out.println("Cliente conectado a servidor 3");
+	        	clienteServidor(servidores.get(2));
 	        }else {
 	        	
 	        }
@@ -53,17 +54,43 @@ public class ThreadAtiendeCliente extends Thread {
 		}
 	}
 	
+	private void clienteServidor(Socket servidor) {
+		try {
+			outServidor = new DataOutputStream(servidor.getOutputStream());
+			inServidor = new DataInputStream(servidor.getInputStream());
+			outCliente.writeUTF("CONECTADO A SERVIDOR");
+			mensaje(inServidor);
+			operacion(outServidor,inServidor);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void operacion(DataOutputStream outServidor, DataInputStream inServidor) {
+		try {
+			while (true) {
+				String clienteOperacion = inCliente.readUTF();
+				outServidor.writeUTF(clienteOperacion);
+		    	mensaje(inServidor);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Pre:---
 	 * Post:Mostrar TODOS los mensajes que enviar por Servidor.
 	 * @param in
 	 * @param out 
 	 */
-	private void mensaje(DataInputStream in, DataOutputStream out) {
+	private void mensaje(DataInputStream in) {
 		try {
 			while (true) {
 		    	String info = in.readUTF();
-		    	out.writeUTF(info);;
+		    	outCliente.writeUTF(info);;
 		        if (info.equalsIgnoreCase("MENSAJE FIN")) {
 		            break;
 		        }   
