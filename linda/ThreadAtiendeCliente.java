@@ -37,6 +37,8 @@ public class ThreadAtiendeCliente extends Thread {
 			outCliente.writeUTF("MENSAJE FIN");
 			mensaje = inCliente.readUTF();
 	        if(mensaje.toUpperCase().equals("SERVIDOR1")) {
+				outServidor = new DataOutputStream(servidores.get(0).getOutputStream());
+				outServidor.writeUTF(mensaje);
 				System.out.println("Cliente conectado a servidor 1");
 	        	clienteServidor(servidores.get(0));
 			}else if(mensaje.toUpperCase().equals("SERVIDOR2")) {
@@ -59,20 +61,11 @@ public class ThreadAtiendeCliente extends Thread {
 			outServidor = new DataOutputStream(servidor.getOutputStream());
 			inServidor = new DataInputStream(servidor.getInputStream());
 			outCliente.writeUTF("CONECTADO A SERVIDOR");
-			mensaje(inServidor);
-			operacion(outServidor,inServidor);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void operacion(DataOutputStream outServidor, DataInputStream inServidor) {
-		try {
 			while (true) {
-				String clienteOperacion = inCliente.readUTF();
-				outServidor.writeUTF(clienteOperacion);
 		    	mensaje(inServidor);
+				System.out.println("cliente :" + inCliente.readUTF());
+				outServidor.writeUTF(inCliente.readUTF());
+				System.out.println("servidor :" + inServidor.readUTF());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

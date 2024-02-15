@@ -33,6 +33,7 @@ public class ThreadAtiendeServidor extends Thread {
 	        			+	"ReadNote: RN \n"
 	        			+	"RemoveNote: RVN");
 				out.writeUTF("MENSAJE FIN");
+				System.out.print("Operacion" + in.readUTF());
 	        	String mensaje = in.readUTF();
 				System.out.println(mensaje);
 	            if(mensaje.toUpperCase().equals("PN") || mensaje.toUpperCase().equals("POSTNOTE")) {
@@ -161,5 +162,26 @@ public class ThreadAtiendeServidor extends Thread {
 	        tupla.add(mensajeTabla[i]);
 	    }
 		return tupla;
+	}
+	
+	/**
+	 * Pre:---
+	 * Post:Mostrar TODOS los mensajes que enviar por Servidor.
+	 * @param in
+	 * @param out 
+	 */
+	private void mensaje() {
+		try {
+			while (true) {
+		    	String info = in.readUTF();
+		    	System.out.println(info);
+		        if (info.equalsIgnoreCase("MENSAJE FIN")) {
+		            break;
+		        }   
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

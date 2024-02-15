@@ -19,7 +19,7 @@ public class Servidor extends ConexionLindaClient{
 	    	while (true) {
 	            ThreadAtiendeServidor threads = new ThreadAtiendeServidor ( csServidor, almacen);
 	            threads.start();
-	            if(in.readUTF().equalsIgnoreCase("END OF SERVICE")) break;
+	            if(csServidor.isClosed()) break;
 			}
 	    	csServidor.close();
     	}
