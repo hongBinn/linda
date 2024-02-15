@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ConexionLindaServer {
-	private int PUERTO = 5000;
+	private final int PUERTO = 5000;
     private final String HOST = "localhost"; 
     protected ServerSocket ssServidor; 
     protected Socket csServidor; 

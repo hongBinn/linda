@@ -17,10 +17,8 @@ public class Cliente extends ConexionLindaClient {
 	 * serverOut() Mostrar los mensajes que enviado por servidor.
 	 */
 	public void startClient() {//Método para iniciar el cliente
-        try {
-		    DataInputStream in = new DataInputStream(csCliente.getInputStream());
-        	// Canal para enviar mensajes (salida)
-            DataOutputStream out = new DataOutputStream(csCliente.getOutputStream());
+        try (DataInputStream in = new DataInputStream(cs.getInputStream());
+        	 DataOutputStream out = new DataOutputStream(cs.getOutputStream())) {
             Scanner entrada = new Scanner(System.in);
 	        System.out.println("BIENVENIDO AL SERVICIO" );
             while(true) {
@@ -30,7 +28,7 @@ public class Cliente extends ConexionLindaClient {
             	out.writeUTF(operacion);
             	if(operacion.equalsIgnoreCase("END OF SERVICE")) break;
             }
-            csCliente.close();
+            cs.close();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -43,19 +41,17 @@ public class Cliente extends ConexionLindaClient {
 	 * @param in
 	 */
 	private void mensaje(DataInputStream in) {
-		while (true) {
-    	    try {
-    	    	String info = in.readUTF();
-    	        if (info.equalsIgnoreCase("MENSAJE FIN")) {
-    	        	System.out.println( info );
-    	            break;
-    	        } else {
-    	            System.out.println( info );
-    	        }
-    	    } catch (IOException e) {
-    	        e.printStackTrace();
-    	        break;
-    	    }
-    	}
+		try {
+			while (true) {
+		    	String info = in.readUTF();
+		    	System.out.println( info );
+		        if (info.equalsIgnoreCase("MENSAJE FIN")) {
+		            break;
+		        }   
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

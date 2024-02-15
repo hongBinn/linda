@@ -5,17 +5,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ConexionLindaClient {
-    private final int PUERTO = 5051; //Puerto para la conexión
-    private final String HOST = "localhost"; //Host para la conexión
-    protected ServerSocket ssCliente; //Socket del servidor
-    protected Socket csCliente; //Socket del cliente
+    private final int PUERTO_CLIENTE = 5050;
+    private final int PUERTO_SERVIDOR = 5000;
+    private final String HOST = "localhost";
+    protected ServerSocket ssCliente;
+    protected ServerSocket ssServidor;
+    protected Socket cs;
     
     public ConexionLindaClient(String tipo) throws IOException {//Constructor
         if(tipo.equalsIgnoreCase("linda")) {
-            ssCliente = new ServerSocket(PUERTO);//Se crea el socket para el servidor en puerto 1234
-            //cs = new Socket(); //Socket para el cliente
+        	ssCliente = new ServerSocket(PUERTO_CLIENTE);
+        	ssServidor = new ServerSocket(PUERTO_SERVIDOR);
+        } else if (tipo.equalsIgnoreCase("servidor")) {
+        	cs = new Socket(HOST, PUERTO_SERVIDOR);
         } else {
-            csCliente = new Socket(HOST, PUERTO); //Socket para el cliente en localhost en puerto 1234
+            cs = new Socket(HOST, PUERTO_CLIENTE);
         }
     }
 }
