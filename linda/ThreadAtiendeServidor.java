@@ -34,11 +34,11 @@ public class ThreadAtiendeServidor extends Thread {
 	        			+	"RemoveNote: RVN");
 				out.writeUTF("MENSAJE FIN");
 	        	String mensaje = in.readUTF();
-	            if(mensaje.equalsIgnoreCase("PostNote")) {
+	            if(mensaje.toUpperCase().equals("PN") || mensaje.toUpperCase().equals("POSTNOTE")) {
 	                PostNote();
-	            }else if(mensaje.equalsIgnoreCase("RemoveNote")) {
+	            }else if(mensaje.toUpperCase().equals("RVN") || mensaje.toUpperCase().equals("REMOVENOTE")) {
 	            	RemoveNote();
-	            }else if(mensaje.equalsIgnoreCase("readNote")) {
+	            }else if(mensaje.toUpperCase().equals("RN") || mensaje.toUpperCase().equals("READNOTE")) {
 	            	readNote();
 	            }else{
 	            	out.writeUTF("Operacion Incorrecto");
