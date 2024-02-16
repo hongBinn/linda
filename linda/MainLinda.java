@@ -1,13 +1,8 @@
-package linda;
-
-import java.io.IOException;
-
+package DistribuidoLINDA;
 
 public class MainLinda {
-	public static void main(String[] args) throws IOException {
-	      ServerLinda servLinda = new ServerLinda(); //Se crea el servidor
-
-	      System.out.println("Iniciando servidor LINDA\n");
-	      servLinda.startServer(); //Se inicia el servidor
-	  }
+	public static void main(String[] args) {
+		Linda li = new Linda();
+		li.startServer(); 
+	}
 }

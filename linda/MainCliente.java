@@ -1,13 +1,10 @@
-package linda;
-
-import java.io.IOException;
-
+package DistribuidoLINDA;
 
 public class MainCliente {
-	 public static void main(String[] args) throws IOException {
-	      Cliente cli = new Cliente(); //Se crea el cliente
 
-	      System.out.println("Iniciando cliente\n");
-	      cli.startClient(); //Se inicia el cliente
-	  }
+	public static void main(String[] args) {
+		Cliente cli = new Cliente();
+		cli.startClient();
+	}
+
 }
