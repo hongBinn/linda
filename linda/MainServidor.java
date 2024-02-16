@@ -1,4 +1,4 @@
-package DistribuidoLINDA;
+package linda;
 
 import java.io.IOException;
 import java.util.Scanner;

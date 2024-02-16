@@ -1,4 +1,4 @@
-package DistribuidoLINDA;
+package linda;
 
 public class MainCliente {
 

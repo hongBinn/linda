@@ -1,4 +1,4 @@
-package DistribuidoLINDA;
+package linda;
 
 public class MainLinda {
 	public static void main(String[] args) {

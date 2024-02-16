@@ -1,4 +1,4 @@
-package DistribuidoLINDA;
+package linda;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
