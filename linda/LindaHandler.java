@@ -62,7 +62,7 @@ public class LindaHandler implements Runnable {
 			DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
 			while (true) {
 				String instruccion = in.readUTF();
-				String partes[] = instruccion.split(" ", 2);
+				String partes[] = instruccion.split("\s+", 2);
 				String partesTuplas[] = partes[1].split("\"");
 				System.out.println(instruccion);
 				if (partes[0].equals("PostNote")) {
