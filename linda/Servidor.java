@@ -60,7 +60,8 @@ public class Servidor {
 						booleanList.add(false);
 						break;
 					}
-					//Variable recorrera los numeros impares hasta acabar el analisis.Las variables simpre se encuentran en la posicion impar de la tabla.
+					//Variable que recorre los numeros impares hasta acabar el analisis.Las variables siempre se encuentran en la posiciones 
+					//impares de la tabla.
 					variable = variable + 2;
 					if (variable >= partesTuplas.length) {
 						break;
