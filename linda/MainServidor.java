@@ -11,12 +11,11 @@ public class MainServidor {
 			System.out.println("Que accion quieres realizar?");
 			System.out.println(
 					"------------------------------------------------------------------------------------------------------");
-			System.out.println("1.- Lanzar Linda");
-			System.out.println("2.- Lanzar Serv1");
-			System.out.println("3.- Lanzar Serv1Reserva");
-			System.out.println("4.- Lanzar Serv2");
-			System.out.println("5.- Lanzar Serv3");
-			System.out.print("\n�Que opcion deseas ejecutar?: ");
+			System.out.println("1.- Lanzar Servidor 1 \n"
+					+ "2.- Lanzar Servidor 1(Backup)\n"
+					+ "3.- Lanzar Servidor 2 \n"
+					+ "4.- Lanzar Servidor 3 \n"
+					+ "\n Que opcion deseas ejecutar?: \n");
 			int numero = reader.nextInt();
 			System.out.println("");
 			if (numero == 1) {
@@ -31,10 +30,9 @@ public class MainServidor {
 			} else if (numero == 4) {
 				Servidor servidor = new Servidor();
 				servidor.startServer(numero);
-			}else {
+			} else {
 				System.out.println("Error, elija una de las opciones validas");
 			}
 		}
 	}
-	
 }

@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 public class Servidor {
 	protected ServerSocket serverSocket; 
 	protected Socket clientSocket;
 	public ArrayList<String> lista = new ArrayList<String>();
+	public Semaphore semaphore = new Semaphore (1);
 
 	/*
 	 * Pre: -- 
@@ -31,7 +33,7 @@ public class Servidor {
 				System.out.println("Esperando...");
 				clientSocket = serverSocket.accept();
 				System.out.println("Linda en linea");
-				LindaHandler LindaSock = new LindaHandler(clientSocket, lista);
+				LindaHandler LindaSock = new LindaHandler(clientSocket, lista, semaphore);
 				new Thread(LindaSock).start();
 			}
 		} catch (Exception e) {

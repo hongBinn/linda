@@ -62,8 +62,8 @@ public class ClientHandler implements Runnable {
 				boolean server1 = false;
 				boolean server1Reserva = false;
 				String instruccion = in.readUTF();
-				String partes[] = instruccion.split("\"");
-				if (partes.length <= 7) {
+				String partes[] = instruccion.split("\\s+");
+				if (partes.length <= 4) {
 					String resultado = "";
 					try {
 						server = new Socket("localhost", 1235);
@@ -92,19 +92,25 @@ public class ClientHandler implements Runnable {
 					} else {
 						out.writeUTF(resultado);
 					}
-				} else if (partes.length <= 11 && partes.length >= 8) {
+				} else if (partes.length <= 6 && partes.length >= 5) {
 					try {
 						server = new Socket("localhost", 1237);
 						out.writeUTF(insertarInstruccion(server, out, instruccion));
 					} catch (Exception e) {
 						out.writeUTF("El servidor al que intenta acceder no esta operativo");
 					}
-				} else if (partes.length == 13) {
+				} else if (partes.length == 7) {
 					try {
 						server = new Socket("localhost", 1238);
 						out.writeUTF(insertarInstruccion(server, out, instruccion));
 					} catch (Exception e) {
 						out.writeUTF("El servidor al que intenta acceder no esta operativo");
+					}
+				} else {
+					try {
+						out.writeUTF("Tupla con tamaño más de 6 no se guarda a cualquier servidor");
+					} catch (Exception e) {
+						out.writeUTF(e.getMessage());
 					}
 				}
 			}

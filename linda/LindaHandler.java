@@ -4,15 +4,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 public class LindaHandler implements Runnable {
 	private Socket clientSocket;
 	public ArrayList<String> lista;
+	public static Semaphore semaphore;
 
-	public LindaHandler(Socket socket, ArrayList<String> lista) {
+	public LindaHandler(Socket socket, ArrayList<String> lista, Semaphore semaphore) {
 		this.clientSocket = socket;
 		this.lista = lista;
+		LindaHandler.semaphore = semaphore;
 	}
 	
 	/*
@@ -20,37 +23,21 @@ public class LindaHandler implements Runnable {
 	 * Post: Este metodo se encarga de leer las tuplas almacenadas y compararlas con la tupla enviada por el usuario. 
 	 * 		 Dependiendo de los parametros que envie el usuario se eliminara o se devolvera la tupla.
 	 */
-	public String leer(String[] partesTuplas, boolean eliminar) {
-		String regex = "[A-Z]";
+	public String leer(String[] parteTupla, boolean eliminar) {
 		for (int i = 0; i < this.lista.size(); i++) {
-			boolean devolver = true;
-			int variable = 1;
-			ArrayList<Boolean> booleanList = new ArrayList<Boolean>();
-			String comparacion[] = lista.get(i).split("\"");
-			if (comparacion.length == partesTuplas.length) {
-				while (true) {
-					if (partesTuplas[variable].equals(comparacion[variable]) || partesTuplas[variable].substring(0, 1).equalsIgnoreCase("?") && Pattern.matches(regex, partesTuplas[variable].substring(1, 2))) {
-						booleanList.add(true);
-					} else {
-						booleanList.add(false);
-						break;
-					}
-					// Variable recorrera los numeros impares hasta acabar el analisis. Las variables simpre se encuentran en la posicion impar de la tabla.
-					variable = variable + 2;
-					if (variable >= partesTuplas.length) {
-						break;
-					}
-				}
-				for (int j = 0; j < booleanList.size(); j++) {
-					if (booleanList.get(j) == false) {
-						devolver = false;
-						break;
-					} 
-				}
-				if (devolver == true) {
-					return(lista.get(i));
-				} 
+			int variable = 0;
+			String comparacion[] = lista.get(i).split("\\s+");
+			for (int x = 0; x < comparacion.length; x++) {
+				for (int y = 0; y < parteTupla.length; y++) {
+					if(comparacion[x].equals(parteTupla[y])||parteTupla[y].toUpperCase().equals("X?")||
+							parteTupla[y].toUpperCase().equals("Y?"))variable++;
+				}	
 			}
+			if (variable == parteTupla.length) {
+				String result = lista.get(i);
+				if(eliminar == true) lista.remove(i);
+				return result;
+			};
 		}
 		return "No se ha encontrado una tupla similar";
 	}
@@ -62,20 +49,24 @@ public class LindaHandler implements Runnable {
 			DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
 			while (true) {
 				String instruccion = in.readUTF();
-				String partes[] = instruccion.split("\s+", 2);
-				String partesTuplas[] = partes[1].split("\"");
+				String partes[] = instruccion.split("\\s+", 2);
+				String partesTuplas[] = partes[1].split("\\s+");
 				System.out.println(instruccion);
-				if (partes[0].equals("PostNote")) {
+				if (partes[0].toUpperCase().equals("POSTNOTE")) {
 					lista.add(partes[1]);
 					System.out.println("Lista actual: ");
 					for (int i = 0; i < lista.size(); i++) {
 						System.out.println(lista.get(i));
 					}
 					out.writeUTF("Tupla incluida con exito");
-				} else if (partes[0].equals("ReadNote")) {
+				} else if (partes[0].toUpperCase().equals("READNOTE")) {
+					semaphore.acquire(1);
 					out.writeUTF(leer(partesTuplas, false));
-				} else if (partes[0].equals("RemoveNote")) {
-					out.writeUTF(Servidor.eliminar(partesTuplas, lista, true));
+					semaphore.release(1);
+				} else if (partes[0].toUpperCase().equals("REMOVENOTE")) {
+					semaphore.acquire(1);
+					out.writeUTF(leer(partesTuplas, true));
+					semaphore.release(1);
 				} else {
 					out.writeUTF("Elije una opcion valida");
 				}
