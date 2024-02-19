@@ -12,8 +12,8 @@ public class Cliente {
 	protected ServerSocket serverSocket;
 	protected Socket clientSocket; 
 	
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: --- 
 	 * Post: Este metodo gestiona las acciones de un cliente.
 	 */
 	public void startClient() {

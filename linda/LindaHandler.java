@@ -18,8 +18,8 @@ public class LindaHandler implements Runnable {
 		LindaHandler.semaphore = semaphore;
 	}
 	
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: --- 
 	 * Post: Este metodo se encarga de leer las tuplas almacenadas y compararlas con la tupla enviada por el usuario. 
 	 * 		 Dependiendo de los parametros que envie el usuario se eliminara o se devolvera la tupla.
 	 */
@@ -42,6 +42,10 @@ public class LindaHandler implements Runnable {
 		return "No se ha encontrado una tupla similar";
 	}
 
+	/**
+	 * Pre:---
+	 * Post:Que recibe instrucciones de clientes y las procesa de acuerdo con el tipo de instrucción.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -75,5 +79,4 @@ public class LindaHandler implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
 }

@@ -13,12 +13,11 @@ public class Servidor {
 	public ArrayList<String> lista = new ArrayList<String>();
 	public Semaphore semaphore = new Semaphore (1);
 
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: --- 
 	 * Post: Este metodo lanza un servidor y gestiona las conexiones recibidas por linda.
 	 */
 	public void startServer(int opcion) throws IOException {
-		
 		if (opcion == 1) {
 			serverSocket = new ServerSocket(1235); // 1-3
 		} else if (opcion == 2) {
@@ -41,8 +40,8 @@ public class Servidor {
 		}
 	}
 	
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: --- 
 	 * Post: Este metodo se encarga de eliminar la tupla deseada por el usuario.
 	 */
 	public synchronized static String eliminar(String[] partesTuplas, ArrayList<String> lista, boolean eliminar) {

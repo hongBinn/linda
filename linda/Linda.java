@@ -8,23 +8,22 @@ public class Linda {
 	protected ServerSocket serverSocket;
 	protected Socket clientSocket;
 
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: ---
 	 * Post: Este metodo gestiona las acciones del servidor Linda.
 	 */
 	public void startServer() {
-			try {
-				serverSocket = new ServerSocket(PUERTO);
-				while (true) {
-					System.out.println("Esperando..."); 
-					clientSocket = serverSocket.accept();
-					System.out.println("Cliente en linea");
-	                ClientHandler clientSock = new ClientHandler(clientSocket);
-	                new Thread(clientSock).start();
-				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+		try {
+			serverSocket = new ServerSocket(PUERTO);
+			while (true) {
+				System.out.println("Esperando..."); 
+				clientSocket = serverSocket.accept();
+				System.out.println("Cliente en linea");
+                ClientHandler clientSock = new ClientHandler(clientSocket);
+                new Thread(clientSock).start();
 			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-
+	}
 }

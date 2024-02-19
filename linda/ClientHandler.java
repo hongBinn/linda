@@ -18,8 +18,8 @@ public class ClientHandler implements Runnable {
 		this.clientSocket = socket;
 	}
 
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: --- 
 	 * Post: Este metodo se encarga de insertar una instruccion en el servidor adecuado
 	 */
 	public String insertarInstruccion(Socket servidorDestino, DataOutputStream out, String instruccion) {
@@ -30,12 +30,14 @@ public class ClientHandler implements Runnable {
 			outServer.writeUTF(instruccion);
 			mensaje = inServer.readUTF();
 			System.out.println(mensaje);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return mensaje;
 	}
 
-	/*
-	 * Pre: -- 
+	/**
+	 * Pre: ---
 	 * Post: Este metodo se encarga de insertar las instrucciones que tiene un servidor 
 	 * 		 en espera una vez este se levante.
 	 */
@@ -49,9 +51,15 @@ public class ClientHandler implements Runnable {
 				System.out.println(mensaje);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Pre:---
+	 * Post:Que recibe instrucciones de un cliente y las procesa, 
+	 * comunicándose con diferentes servidores según el tipo de instrucción recibida.
+	 */
 	@Override
 	public void run() {
 		try {
